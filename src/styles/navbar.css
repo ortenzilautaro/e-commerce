@@ -10,10 +10,17 @@
     flex-direction: row;
     position: relative;
 }
+
 .logo-panaderia{
     width: 200px;
     height: 100px;
     display: flex;
+    justify-self: center;
+}
+
+.link-img{
+    width: 200px;
+    height: 100px;
     align-self: center;
 }
 .nav ul{

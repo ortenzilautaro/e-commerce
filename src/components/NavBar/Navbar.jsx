@@ -1,22 +1,30 @@
-import React from 'react';
-import '../../styles/navbar.css';
-import CartWidget from '../CartWidget/CartWidget'
-import LogoPanaderia from '../../assets/logo-panaderia.png'
+import { Link } from "react-router-dom";
+import "../../styles/navbar.css";
+import CartWidget from "../CartWidget/CartWidget";
+import LogoPanaderia from "../../assets/logo-panaderia.png";
 
 function Navbar() {
-    return (
-            <nav className='navbar'>
-                <img src={LogoPanaderia} alt="Panaderia" className='logo-panaderia'/>
-                <div className='nav'>
-                <ul>
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Producto</a></li>
-                    <li><a href="#">Contactos</a></li>
-                </ul>
-                <CartWidget />
-                </div>
-            </nav>
-    )
+  return (
+    <nav className="navbar">
+      <Link to={"/"} className="link-img">
+        <img src={LogoPanaderia} alt="MiaMiga" className="logo-panaderia" />
+      </Link>
+      <div className="nav">
+        <ul>
+          <li>
+            <Link to={"/"}>Inicio</Link>
+          </li>
+          <li>
+            <Link to={"/productos"}>Productos</Link>
+          </li>
+          <li>
+            <Link to={"/nosotros"}>Nosotros</Link>
+          </li>
+        </ul>
+        <CartWidget />
+      </div>
+    </nav>
+  );
 }
 
-export default Navbar
+export default Navbar;
