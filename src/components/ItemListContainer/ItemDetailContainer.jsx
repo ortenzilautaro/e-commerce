@@ -4,27 +4,40 @@ import { Link } from "react-router-dom";
 import "../../styles/productos.css";
 import { Navigate } from "react-router-dom";
 import InputCount from "./InputCount";
+import { getFirestore, getDocs, collection } from "firebase/firestore";
 
 function ItemDetailContainer() {
   const { producto, especialidades } = useParams();
   const [productos, setProductos] = useState({});
 
+  const db = getFirestore();
+
   useEffect(() => {
-    try {
-      async function hacerFetch() {
-        const pedirDatos = await fetch("/src/public/productos.json");
-        const datos = await pedirDatos.json();
-        setProductos(datos);
+    async function fetchProductos() {
+      try {
+        const productosRef = collection(db, "productos");
+        const querySnapshot = await getDocs(productosRef);
+
+        const data = {};
+        querySnapshot.forEach((doc) => {
+          data[doc.id] = doc.data();
+        });
+
+        setProductos(data);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
       }
-      hacerFetch();
-    } catch {
-      console.error(`Error al cargar productos: `, error);
     }
-    return () => {};
+
+    fetchProductos();
   }, []);
 
   if (!productos[especialidades]) {
-    return <p>No existe este producto</p>;
+    return (
+      <>
+        <p>Cargando...</p>
+      </>
+    );
   }
 
   const productoEncontrado = Object.entries(productos[especialidades])
@@ -60,7 +73,11 @@ function ItemDetailContainer() {
                   <div className="descripcion">
                     <h3>{p.descripcion}</h3>
                     <p>Precio: ${p.precio}</p>
-                    <InputCount />
+                    <InputCount
+                      nombre={p.nombre}
+                      precio={p.precio}
+                      imagen={p.imagen}
+                    />
                   </div>
                 </div>
               </div>

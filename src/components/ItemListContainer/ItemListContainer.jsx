@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Producto from "./Producto";
 import { Navigate } from "react-router-dom";
+import { getFirestore, getDocs, collection } from "firebase/firestore";
 
 function ItemListContainer() {
   const { especialidades } = useParams();
@@ -11,21 +12,30 @@ function ItemListContainer() {
 
   const especialidadKey = especialidades.toLowerCase().replace(/\s+/g, "_");
 
+  const db = getFirestore();
+
   useEffect(() => {
-    try {
-      async function hacerFetch() {
-        const datos = await fetch("/src/public/productos.json");
-        const datosJson = await datos.json();
-        setProductos(datosJson);
+    async function fetchProductos() {
+      try {
+        const productosRef = collection(db, "productos");
+        const querySnapshot = await getDocs(productosRef);
+
+        const data = {};
+        querySnapshot.forEach((doc) => {
+          data[doc.id] = doc.data();
+        });
+
+        setProductos(data);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
       }
-      hacerFetch();
-    } catch {
-      console.error(`Error al cargar productos: `, error);
     }
+
+    fetchProductos();
   }, []);
 
   if (productos === null) {
-    return <p>Este producto no existe</p>;
+    return <p>Cargando</p>;
   }
 
   const espEncontrada = Object.entries(productos)

@@ -78,7 +78,7 @@ h2{
     margin: 5px 15px;
     border: 2px solid black;
     width: 155px;
-    height: 300px;
+    height: 320px;
 }
 .div-card h4{
     text-align: center;
@@ -145,5 +145,17 @@ h2{
 
 .input-number{
     width: 20%;
-    margin-bottom: 5px;
+    text-align: center;
+    margin: 5px;
+    padding: 2px;
+}
+
+.botones{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.input-button{
+    padding: 2px;
+    margin: 2px;
 }
